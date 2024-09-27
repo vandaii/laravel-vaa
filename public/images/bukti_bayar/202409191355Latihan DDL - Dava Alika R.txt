@@ -1,0 +1,574 @@
+Microsoft Windows [Version 10.0.22631.4169]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\davaa>cd C:/xampp/mysql/bin
+
+C:\xampp\mysql\bin>mysql -uroot
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 10
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database komik1;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cobacobi           |
+| db_bebaskok        |
+| db_crud_laravel_11 |
+| db_laravel11       |
+| dbsiswa            |
+| information_schema |
+| komik1             |
+| multiuser          |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+12 rows in set (0.001 sec)
+
+MariaDB [(none)]> use komik1;
+Database changed
+MariaDB [komik1]> create table anggota(
+    -> Id_anggota char(4),
+    -> Nama varchar(20),
+    -> Alamat varchar(30),
+    -> No_telp varchar(15),
+    -> Tgl_lahir date,
+    -> primary key(Id_anggota));
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [komik1]> create table komik(
+    -> Id_komik char(5),
+    -> Judul varchar(25),
+    -> Pengarang varchar(25),
+    -> Thn_terbit year,
+    -> Jenis_komik varchar(15),
+    -> primary key(Id_komik));
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [komik1]> create table pinjam(
+    -> No_pinjam int(4),
+    -> Id_anggota char(4),
+    -> Id_komik char(5),
+    -> Jumlah int(2));
+Query OK, 0 rows affected (0.023 sec)
+
+MariaDB [komik1]> show tables;
++------------------+
+| Tables_in_komik1 |
++------------------+
+| anggota          |
+| komik            |
+| pinjam           |
++------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [komik1]> desc anggota;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Id_anggota | char(4)     | NO   | PRI | NULL    |       |
+| Nama       | varchar(20) | YES  |     | NULL    |       |
+| Alamat     | varchar(30) | YES  |     | NULL    |       |
+| No_telp    | varchar(15) | YES  |     | NULL    |       |
+| Tgl_lahir  | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.031 sec)
+
+MariaDB [komik1]> desc komik;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Id_komik    | char(5)     | NO   | PRI | NULL    |       |
+| Judul       | varchar(25) | YES  |     | NULL    |       |
+| Pengarang   | varchar(25) | YES  |     | NULL    |       |
+| Thn_terbit  | year(4)     | YES  |     | NULL    |       |
+| Jenis_komik | varchar(15) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.032 sec)
+
+MariaDB [komik1]> desc pinjam;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| No_pinjam  | int(4)  | YES  |     | NULL    |       |
+| Id_anggota | char(4) | YES  |     | NULL    |       |
+| Id_komik   | char(5) | YES  |     | NULL    |       |
+| Jumlah     | int(2)  | YES  |     | NULL    |       |
++------------+---------+------+-----+---------+-------+
+4 rows in set (0.033 sec)
+
+MariaDB [komik1]> alter table anggota drop primary key;
+Query OK, 0 rows affected (0.057 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> alter table anggota
+    -> add Tgl_daftar date;
+Query OK, 0 rows affected (0.021 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> alter table anggota rename anggota_warnet;
+Query OK, 0 rows affected (0.022 sec)
+
+MariaDB [komik1]> alter table komik
+    -> add Status varchar(10);
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> desc pinjam;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| No_pinjam  | int(4)  | YES  |     | NULL    |       |
+| Id_anggota | char(4) | YES  |     | NULL    |       |
+| Id_komik   | char(5) | YES  |     | NULL    |       |
+| Jumlah     | int(2)  | YES  |     | NULL    |       |
++------------+---------+------+-----+---------+-------+
+4 rows in set (0.028 sec)
+
+MariaDB [komik1]> alter table pinjam
+    -> add primary key
+    -> (Id_anggota);
+Query OK, 0 rows affected (0.033 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> desc pinjam;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| No_pinjam  | int(4)  | YES  |     | NULL    |       |
+| Id_anggota | char(4) | NO   | PRI | NULL    |       |
+| Id_komik   | char(5) | YES  |     | NULL    |       |
+| Jumlah     | int(2)  | YES  |     | NULL    |       |
++------------+---------+------+-----+---------+-------+
+4 rows in set (0.035 sec)
+
+MariaDB [komik1]> alter table pinjam rename transaksi;
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [komik1]> alter table anggota_warnet
+    -> add primary key(Id_anggota);
+Query OK, 0 rows affected (0.040 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> alter table komik
+    -> drop Jenis_komik;
+Query OK, 0 rows affected (0.020 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> alter table transaksi
+    -> change Jumlah Jml_komik int (4);
+Query OK, 0 rows affected (0.020 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [komik1]> create database db_latihan_dml;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [komik1]> use db_latihan_dml;
+Database changed
+MariaDB [db_latihan_dml]> create table buku(
+    -> Id_buku char(4),
+    -> Judul_buku varchar(45),
+    -> prnulis varchar(25),
+    -> Thn_terbit year(15),
+    -> Penerbit varchar(45),
+    -> primary key(Id_buku));
+Query OK, 0 rows affected, 1 warning (0.022 sec)
+
+MariaDB [db_latihan_dml]> desc buku;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Id_buku    | char(4)     | NO   | PRI | NULL    |       |
+| Judul_buku | varchar(45) | YES  |     | NULL    |       |
+| prnulis    | varchar(25) | YES  |     | NULL    |       |
+| Thn_terbit | year(4)     | YES  |     | NULL    |       |
+| Penerbit   | varchar(45) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.031 sec)
+
+MariaDB [db_latihan_dml]> insert into buku
+    -> (Id_buku, Judul_buku, prnulis, Thn_terbit, Penerbit)
+    -> values
+    -> ('BK01', 'Perahu Kertas', 'Dewi Lestari', '2007', 'Abadi Jaya'),
+    -> ('BK02', 'Laskar Pelangi', 'Andrea Hirata', '2004', 'Abadi Jaya'),
+    -> ('BK03', 'Sang Pemimpi', 'Andrea Hirata', '2005', 'Abadi Jaya'),
+    -> ('BK04', 'Harry Potter 4', 'J.K.Rowling', '2003', 'Indo Karya'),
+    -> ('BK05', 'Warnet SQL', 'DR. Nena', '2009', 'Wacana Ria');
+Query OK, 5 rows affected (0.015 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [db_latihan_dml]> select * from buku;
++---------+----------------+---------------+------------+------------+
+| Id_buku | Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++---------+----------------+---------------+------------+------------+
+| BK01    | Perahu Kertas  | Dewi Lestari  |       2007 | Abadi Jaya |
+| BK02    | Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| BK03    | Sang Pemimpi   | Andrea Hirata |       2005 | Abadi Jaya |
+| BK04    | Harry Potter 4 | J.K.Rowling   |       2003 | Indo Karya |
+| BK05    | Warnet SQL     | DR. Nena      |       2009 | Wacana Ria |
++---------+----------------+---------------+------------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_latihan_dml]> select * from buku where penerbit="Abadi Jaya";
++---------+----------------+---------------+------------+------------+
+| Id_buku | Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++---------+----------------+---------------+------------+------------+
+| BK01    | Perahu Kertas  | Dewi Lestari  |       2007 | Abadi Jaya |
+| BK02    | Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| BK03    | Sang Pemimpi   | Andrea Hirata |       2005 | Abadi Jaya |
++---------+----------------+---------------+------------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from buku group by penerbit;
++---------+----------------+--------------+------------+------------+
+| Id_buku | Judul_buku     | prnulis      | Thn_terbit | Penerbit   |
++---------+----------------+--------------+------------+------------+
+| BK01    | Perahu Kertas  | Dewi Lestari |       2007 | Abadi Jaya |
+| BK04    | Harry Potter 4 | J.K.Rowling  |       2003 | Indo Karya |
+| BK05    | Warnet SQL     | DR. Nena     |       2009 | Wacana Ria |
++---------+----------------+--------------+------------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from buku order by penerbit;
++---------+----------------+---------------+------------+------------+
+| Id_buku | Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++---------+----------------+---------------+------------+------------+
+| BK01    | Perahu Kertas  | Dewi Lestari  |       2007 | Abadi Jaya |
+| BK02    | Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| BK03    | Sang Pemimpi   | Andrea Hirata |       2005 | Abadi Jaya |
+| BK04    | Harry Potter 4 | J.K.Rowling   |       2003 | Indo Karya |
+| BK05    | Warnet SQL     | DR. Nena      |       2009 | Wacana Ria |
++---------+----------------+---------------+------------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis, Thn_terbit
+    -> from buku;
++----------------+---------------+------------+
+| Judul_buku     | prnulis       | Thn_terbit |
++----------------+---------------+------------+
+| Perahu Kertas  | Dewi Lestari  |       2007 |
+| Laskar Pelangi | Andrea Hirata |       2004 |
+| Sang Pemimpi   | Andrea Hirata |       2005 |
+| Harry Potter 4 | J.K.Rowling   |       2003 |
+| Warnet SQL     | DR. Nena      |       2009 |
++----------------+---------------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_latihan_dml]> select * from buku where prnulis like 'A%';
++---------+----------------+---------------+------------+------------+
+| Id_buku | Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++---------+----------------+---------------+------------+------------+
+| BK02    | Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| BK03    | Sang Pemimpi   | Andrea Hirata |       2005 | Abadi Jaya |
++---------+----------------+---------------+------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from buku where Thn_terbit < 2005;
++---------+----------------+---------------+------------+------------+
+| Id_buku | Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++---------+----------------+---------------+------------+------------+
+| BK02    | Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| BK04    | Harry Potter 4 | J.K.Rowling   |       2003 | Indo Karya |
++---------+----------------+---------------+------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from buku where judul_buku like '%SQL%';
++---------+------------+----------+------------+------------+
+| Id_buku | Judul_buku | prnulis  | Thn_terbit | Penerbit   |
++---------+------------+----------+------------+------------+
+| BK05    | Warnet SQL | DR. Nena |       2009 | Wacana Ria |
++---------+------------+----------+------------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from buku where prnulis='Dewi Lestari';
++---------+---------------+--------------+------------+------------+
+| Id_buku | Judul_buku    | prnulis      | Thn_terbit | Penerbit   |
++---------+---------------+--------------+------------+------------+
+| BK01    | Perahu Kertas | Dewi Lestari |       2007 | Abadi Jaya |
++---------+---------------+--------------+------------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis from buku order by prnulis;
++----------------+---------------+
+| Judul_buku     | prnulis       |
++----------------+---------------+
+| Laskar Pelangi | Andrea Hirata |
+| Sang Pemimpi   | Andrea Hirata |
+| Perahu Kertas  | Dewi Lestari  |
+| Warnet SQL     | DR. Nena      |
+| Harry Potter 4 | J.K.Rowling   |
++----------------+---------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis from buku order by prnulis desc;
++----------------+---------------+
+| Judul_buku     | prnulis       |
++----------------+---------------+
+| Harry Potter 4 | J.K.Rowling   |
+| Warnet SQL     | DR. Nena      |
+| Perahu Kertas  | Dewi Lestari  |
+| Laskar Pelangi | Andrea Hirata |
+| Sang Pemimpi   | Andrea Hirata |
++----------------+---------------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis, Thn_terbit from buku
+    -> where Thn_terbit < 2005
+    -> ;
++----------------+---------------+------------+
+| Judul_buku     | prnulis       | Thn_terbit |
++----------------+---------------+------------+
+| Laskar Pelangi | Andrea Hirata |       2004 |
+| Harry Potter 4 | J.K.Rowling   |       2003 |
++----------------+---------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis, Thn_terbit, Penerbit from buku
+    -> where Thn_terbit < 2005
+    -> order by Thn_terbit desc;
++----------------+---------------+------------+------------+
+| Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++----------------+---------------+------------+------------+
+| Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| Harry Potter 4 | J.K.Rowling   |       2003 | Indo Karya |
++----------------+---------------+------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis, Thn_terbit, Penerbit from buku;
++----------------+---------------+------------+------------+
+| Judul_buku     | prnulis       | Thn_terbit | Penerbit   |
++----------------+---------------+------------+------------+
+| Perahu Kertas  | Dewi Lestari  |       2007 | Abadi Jaya |
+| Laskar Pelangi | Andrea Hirata |       2004 | Abadi Jaya |
+| Sang Pemimpi   | Andrea Hirata |       2005 | Abadi Jaya |
+| Harry Potter 4 | J.K.Rowling   |       2003 | Indo Karya |
+| Warnet SQL     | DR. Nena      |       2009 | Wacana Ria |
++----------------+---------------+------------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select Judul_buku, prnulis, Penerbit from buku
+    -> where prnulis="Andrea Hirata"
+    -> order by Judul_buku desc;
++----------------+---------------+------------+
+| Judul_buku     | prnulis       | Penerbit   |
++----------------+---------------+------------+
+| Sang Pemimpi   | Andrea Hirata | Abadi Jaya |
+| Laskar Pelangi | Andrea Hirata | Abadi Jaya |
++----------------+---------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> show tables;
++--------------------------+
+| Tables_in_db_latihan_dml |
++--------------------------+
+| buku                     |
++--------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> create table member(
+    -> Id_member char(5),
+    -> Nama_member varchar(40),
+    -> Alamat varchar(75),
+    -> Semester char(2),
+    -> Usia char(2),
+    -> primary key(Id_member));
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [db_latihan_dml]> desc member;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Id_member   | char(5)     | NO   | PRI | NULL    |       |
+| Nama_member | varchar(40) | YES  |     | NULL    |       |
+| Alamat      | varchar(75) | YES  |     | NULL    |       |
+| Semester    | char(2)     | YES  |     | NULL    |       |
+| Usia        | char(2)     | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.031 sec)
+
+MariaDB [db_latihan_dml]> insert into member
+    -> (Id_member, Nama_member, Alamat, Semester, Usia)
+    -> values
+    -> ('01001', 'Tio Ferdinand', 'Jl. Serpong Raya No.11', '4', '21'),
+    -> ('01002', 'Ahmad Sanches', 'Jl. Cilenggang No.20', '3', '20'),
+    -> ('01003', 'Riki Bahagia', 'Jl. Hutama Karya No.03', '4', '20'),
+    -> ('01004', 'Rere kurnia', 'Jl. Smapai Serpong 167', '2', '19'),
+    -> ('01005', 'Erni Susanti', 'Jl. Nusa Loka - BSD', '1', '18'),
+    -> ('01006', 'Loki Nurdin', 'Jl. BSD Raya No.20', '1', '18');
+Query OK, 6 rows affected (0.015 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [db_latihan_dml]> select * from member;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01004     | Rere kurnia   | Jl. Smapai Serpong 167 | 2        | 19   |
+| 01005     | Erni Susanti  | Jl. Nusa Loka - BSD    | 1        | 18   |
+| 01006     | Loki Nurdin   | Jl. BSD Raya No.20     | 1        | 18   |
++-----------+---------------+------------------------+----------+------+
+6 rows in set (0.000 sec)
+
+MariaDB [db_latihan_dml]> select * from member where nama_member="Erni Susanti";
++-----------+--------------+---------------------+----------+------+
+| Id_member | Nama_member  | Alamat              | Semester | Usia |
++-----------+--------------+---------------------+----------+------+
+| 01005     | Erni Susanti | Jl. Nusa Loka - BSD | 1        | 18   |
++-----------+--------------+---------------------+----------+------+
+1 row in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member where usia < 21;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01004     | Rere kurnia   | Jl. Smapai Serpong 167 | 2        | 19   |
+| 01005     | Erni Susanti  | Jl. Nusa Loka - BSD    | 1        | 18   |
+| 01006     | Loki Nurdin   | Jl. BSD Raya No.20     | 1        | 18   |
++-----------+---------------+------------------------+----------+------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member where not nama_member="Rere Kurnia";
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01005     | Erni Susanti  | Jl. Nusa Loka - BSD    | 1        | 18   |
+| 01006     | Loki Nurdin   | Jl. BSD Raya No.20     | 1        | 18   |
++-----------+---------------+------------------------+----------+------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select nama_member, semester from member
+    -> order by semester;
++---------------+----------+
+| nama_member   | semester |
++---------------+----------+
+| Erni Susanti  | 1        |
+| Loki Nurdin   | 1        |
+| Rere kurnia   | 2        |
+| Ahmad Sanches | 3        |
+| Tio Ferdinand | 4        |
+| Riki Bahagia  | 4        |
++---------------+----------+
+6 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select nama_member, usia from member
+    -> where usia between 19 AND 20;
++---------------+------+
+| nama_member   | usia |
++---------------+------+
+| Ahmad Sanches | 20   |
+| Riki Bahagia  | 20   |
+| Rere kurnia   | 19   |
++---------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_latihan_dml]> select * from member
+    -> where usia > 18 or semester > 2;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01004     | Rere kurnia   | Jl. Smapai Serpong 167 | 2        | 19   |
++-----------+---------------+------------------------+----------+------+
+4 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member
+    -> where usia > 18 AND semester > 2;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
++-----------+---------------+------------------------+----------+------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select nama_member, alamat from member
+    -> where nama_member like 'R%'
+    -> order by nama_member;
++--------------+------------------------+
+| nama_member  | alamat                 |
++--------------+------------------------+
+| Rere kurnia  | Jl. Smapai Serpong 167 |
+| Riki Bahagia | Jl. Hutama Karya No.03 |
++--------------+------------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select nama_member, alamat, usia from member
+    -> where usia > 18
+    -> order by nama_member desc;
++---------------+------------------------+------+
+| nama_member   | alamat                 | usia |
++---------------+------------------------+------+
+| Tio Ferdinand | Jl. Serpong Raya No.11 | 21   |
+| Riki Bahagia  | Jl. Hutama Karya No.03 | 20   |
+| Rere kurnia   | Jl. Smapai Serpong 167 | 19   |
+| Ahmad Sanches | Jl. Cilenggang No.20   | 20   |
++---------------+------------------------+------+
+4 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member LIMIT 4;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01004     | Rere kurnia   | Jl. Smapai Serpong 167 | 2        | 19   |
++-----------+---------------+------------------------+----------+------+
+4 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member
+    -> order by semester desc
+    -> LIMIT 5;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01004     | Rere kurnia   | Jl. Smapai Serpong 167 | 2        | 19   |
+| 01005     | Erni Susanti  | Jl. Nusa Loka - BSD    | 1        | 18   |
++-----------+---------------+------------------------+----------+------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member LIMIT 1,3;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
+| 01004     | Rere kurnia   | Jl. Smapai Serpong 167 | 2        | 19   |
++-----------+---------------+------------------------+----------+------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]> select * from member
+    -> order by Id_member
+    -> LIMIT 0,3;
++-----------+---------------+------------------------+----------+------+
+| Id_member | Nama_member   | Alamat                 | Semester | Usia |
++-----------+---------------+------------------------+----------+------+
+| 01001     | Tio Ferdinand | Jl. Serpong Raya No.11 | 4        | 21   |
+| 01002     | Ahmad Sanches | Jl. Cilenggang No.20   | 3        | 20   |
+| 01003     | Riki Bahagia  | Jl. Hutama Karya No.03 | 4        | 20   |
++-----------+---------------+------------------------+----------+------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_latihan_dml]>
